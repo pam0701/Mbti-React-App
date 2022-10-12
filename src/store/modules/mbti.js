@@ -1,39 +1,7 @@
-// 선택지에 따른 성향 분석하기
-// 해당 결과를 저장하고 마지막에 저장 된 결과를 출력해 주기
-
-// 상태: MBTI 결과
-// 액션: 선택에 따른 MBTI 결정하기
-
-// 액션 타입(문자열)
-const CHECK = 'mbti/CHECK';
-const NEXT = 'mbti/NEXT';
-const RESET = 'mbti/RESET';
-
-// 액션 생성 함수
-// payload -> 선택에 다른 결과 값 result 전달 필요
-export function check(result) {
-  return {
-    type: CHECK,
-    payload: { result },
-  };
-}
-
-export function next() {
-  return {
-    type: NEXT,
-  };
-}
-
-export function reset() {
-  return {
-    type: RESET,
-  };
-}
-
 // 초기 상태 설정
 const initState = {
   mbtiResult: '',
-  page: 0, // 0: 인트로 페이지, 1 ~ n: 선택 페이지, n+1: 결과 페이지
+  page: 0,
   survey: [
     {
       question:
@@ -159,7 +127,27 @@ const initState = {
     },
   },
 };
-
+// 액션 타입
+const CHECK = 'mbti/CHECK';
+const NEXT = 'mbti/NEXT';
+const RESET = 'mbti/RESET';
+// 액션 생성 함수
+export function next() {
+  return {
+    type: NEXT,
+  };
+}
+export function check(result) {
+  return {
+    type: CHECK,
+    payload: { result },
+  };
+}
+export function reset() {
+  return {
+    type: RESET,
+  };
+}
 // 리듀서
 export default function mbti(state = initState, action) {
   switch (action.type) {
