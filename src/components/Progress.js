@@ -9,6 +9,7 @@ const Fill = styled.div`
     height: 0.75rem
     background-color: #777;
     margin-top: 1rem;
+    text-align: :left;
 `;
 
 const Gauge = styled.div`
@@ -17,6 +18,7 @@ const Gauge = styled.div`
   position: relative;
   background-color: skyblue;
   width: ${(props) => props.percent}%;
+  top: -2px;
 `;
 export default function Progress({ page, maxPage }) {
   return (
