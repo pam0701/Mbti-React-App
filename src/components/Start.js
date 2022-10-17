@@ -2,6 +2,7 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import OrangeButton from './OrangeButton';
 import { next } from '../store/modules/mbti';
+import { useEffect, useState } from 'react';
 
 const MainImg = styled.img`
   width: inherit;
@@ -17,15 +18,84 @@ const SubHeader = styled.p`
 `;
 
 export default function Start() {
+  const [initData, setInitData] = useState({
+    survey: [],
+    explaination: {},
+  });
+
+  const [counts, setCounts] = useState(0);
+
   const dispatch = useDispatch();
+
+  const makeData = (survey, explaination) => {
+    if (initData.survey.length === 0) {
+      for (let i = 0; i < survey.length; i = i + 2) {
+        initData.survey.push({
+          question: survey[i].question_text,
+          answer: [
+            {
+              text: survey[i].answer_text,
+              result: survey[i].result,
+            },
+            {
+              text: survey[i + 1].answer_text,
+              result: survey[i + 1].result,
+            },
+          ],
+        });
+      }
+
+      for (let i = 0; i < explaination.length; i++) {
+        initData.explaination[explaination[i].mbti_type] = {
+          explaination: explaination[i].explaination,
+          img: explaination[i].img_src,
+        };
+      }
+    }
+  };
+
+  useEffect(() => {
+    async function fetchData() {
+      const resCount = await fetch('http://localhost:4000/data/count');
+      if (resCount.status === 200) {
+        const num = await resCount.json();
+        if (num[0].counts !== 0) setCounts(num[0].counts);
+      } else {
+        throw new Error('통신 이상');
+      }
+
+      const resSurvey = await fetch('http://localhost:4000/data/survey');
+      if (resSurvey.status === 200) {
+        const surveyData = await resSurvey.json();
+
+        const resExplaination = await fetch(
+          'http://localhost:4000/data/explaination'
+        );
+        if (resExplaination.status === 200) {
+          const explainationData = await resExplaination.json();
+          makeData(surveyData, explainationData);
+          if (initData.survey.length !== 0) {
+            dispatch(init(initData));
+          }
+        } else {
+          throw new Error('통신 이상');
+        }
+      } else {
+        throw new Error('통신 이상');
+      }
+    }
+    fetchData();
+  }, [counts]);
 
   return (
     <>
       <Header>개발자 MBTI 조사</Header>
       <MainImg src="/images/main.jpg" alt="메인 이미지" />
       <SubHeader>
-        개발자가 흔히 접하는 상황에 따라서 MBTI를 알아봅시다!
+        개발자가 흔히 접하는 상황에 따라서 MBTI 를 알아 봅시다! 지금까지{'\n\n'}
+        {counts} 명이 참여해 주셨습니다!
       </SubHeader>
+
       <OrangeButton text="테스트 시작" clickEvent={() => dispatch(next())} />
     </>
   );

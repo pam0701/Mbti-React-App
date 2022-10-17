@@ -1,11 +1,12 @@
 const mysql = require('mysql');
 const { connect } = require('react-redux');
+
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'root',
+  user: 'kdt',
   password: 'passwd',
   port: '3306',
-  database: 'mydb',
+  database: 'kdt-local',
 });
 
 connection.connect();
