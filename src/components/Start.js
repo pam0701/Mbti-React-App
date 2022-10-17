@@ -51,7 +51,7 @@ export default function Start() {
   }
 
   async function sqlFetchData() {
-    const resCount = await fetch('http://localhost:3000/data/count');
+    const resCount = await fetch('http://localhost:4000/data/count');
     if (resCount.status === 200) {
       const num = await resCount.json();
       if (num[0].counts !== 0) setCounts(num[0].counts);
@@ -59,13 +59,13 @@ export default function Start() {
       throw new Error('통신 이상');
     }
 
-    const resSurvey = await fetch('http://localhost:3000/data/survey');
+    const resSurvey = await fetch('http://localhost:4000/data/survey');
     if (resSurvey.status === 200) {
       const surveyData = await resSurvey.json();
       console.log(surveyData);
 
       const resExplanation = await fetch(
-        'http://localhost:3000/data/explanation'
+        'http://localhost:4000/data/explanation'
       );
       if (resExplanation.status === 200) {
         const explanationData = await resExplanation.json();

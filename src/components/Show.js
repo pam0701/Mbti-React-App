@@ -48,7 +48,7 @@ export default function Show() {
       method: 'POST',
     });
     if (resMongoInc.status === 200) {
-      console.log(await resMongoInc.json());
+      // console.log(await resMongoInc.json());
     } else {
       throw new Error('통신 이상');
     }
