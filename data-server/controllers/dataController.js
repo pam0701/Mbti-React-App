@@ -19,7 +19,7 @@ const db = {
   },
   getSurvey: (cb) => {
     connection.query(
-      'SELECT * FROM mydb.question q LEFT JOIN mydb.answer a ON q.ID_PK=a.QUESTION_ID_FK',
+      'SELECT * FROM kdtdb.question q LEFT JOIN kdtdb.answer a ON q.ID_PK=a.QUESTION_ID_FK',
       (err, data) => {
         if (err) throw err;
         cb(data);
@@ -27,7 +27,7 @@ const db = {
     );
   },
   getExplanation: (cb) => {
-    connection.query('SELECT * FROM mydb.explanation', (err, data) => {
+    connection.query('SELECT * FROM kdtdb.explanation', (err, data) => {
       if (err) throw err;
       cb(data);
     });

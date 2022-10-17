@@ -21,8 +21,8 @@ router.get('/survey', (req, res) => {
   });
 });
 
-router.get('/explaination', (req, res) => {
-  db.getExplaination((data) => {
+router.get('/explanation', (req, res) => {
+  db.getExplanation((data) => {
     res.send(data);
   });
 });
