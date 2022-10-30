@@ -152,7 +152,7 @@ const mongoDB = {
   incCounts: async () => {
     const client = await _client;
     const db = client.db('mbti').collection('counts');
-    const result = await db.updateOne({ id: 1 }, { $inc: { counts: +1 } });
+    const result = await db.updateOne({ id: 1 }, { $inc: { counts: 1 } });
     if (result.acknowledged) {
       return '업데이트 성공';
     } else {

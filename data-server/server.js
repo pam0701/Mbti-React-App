@@ -8,8 +8,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
+require('dotenv').config();
+
 const dataRouter = require('./routes/data');
 const mongoRouter = require('./routes/mongo');
+
 app.use('/data', dataRouter);
 app.use('/mongo', mongoRouter);
 

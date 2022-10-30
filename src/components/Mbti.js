@@ -16,8 +16,8 @@ const Vs = styled.p`
 
 export default function Mbti() {
   const survey = useSelector((state) => state.mbti.survey);
-  const dispatch = useDispatch();
   const page = useSelector((state) => state.mbti.page);
+  const dispatch = useDispatch();
 
   return (
     <>

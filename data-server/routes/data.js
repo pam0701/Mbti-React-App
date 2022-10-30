@@ -17,12 +17,14 @@ router.post('/inccount', (req, res) => {
 
 router.get('/survey', (req, res) => {
   db.getSurvey((data) => {
+    // console.log(data);
     res.send(data);
   });
 });
 
 router.get('/explanation', (req, res) => {
   db.getExplanation((data) => {
+    // console.log(data);
     res.send(data);
   });
 });

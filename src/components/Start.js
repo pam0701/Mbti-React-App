@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import OrangeButton from './OrangeButton';
-import { next, init } from '../store/modules/mbti';
+import { init, next } from '../store/modules/mbti';
 import { useEffect, useState } from 'react';
 
 const MainImg = styled.img`
@@ -18,7 +18,6 @@ const SubHeader = styled.p`
 `;
 export default function Start() {
   const [counts, setCounts] = useState(0);
-
   const dispatch = useDispatch();
 
   function makeData(survey, explanation) {
@@ -59,38 +58,13 @@ export default function Start() {
       throw new Error('통신 이상');
     }
 
+    //survey 값을 위한 JOIN Table의 데이터 받아오기
     const resSurvey = await fetch('http://localhost:4000/data/survey');
     if (resSurvey.status === 200) {
       const surveyData = await resSurvey.json();
-      console.log(surveyData);
+      /* console.log(surveyData); */
 
-      const resExplanation = await fetch(
-        'http://localhost:4000/data/explanation'
-      );
-      if (resExplanation.status === 200) {
-        const explanationData = await resExplanation.json();
-        console.log('설명', explanationData);
-        const madeData = madeData(surveyData, explanationData);
-        dispatch(init(madeData));
-      } else {
-        throw new Error('통신 이상');
-      }
-    } else {
-      throw new Error('통신 이상');
-    }
-  }
-
-  async function sqlfetchData() {
-    const resCount = await fetch('http://localhost:4000/data/count');
-    if (resCount.status === 200) {
-      const num = await resCount.json();
-      if (num[0].counts !== 0) setCounts(num[0].counts);
-    } else {
-      throw new Error('통신 이상');
-    }
-    const resSurvey = await fetch('http://localhost:4000/data/survey');
-    if (resSurvey.status === 200) {
-      const surveyData = await resSurvey.json();
+      // explanation table의 데이터 받아오기
       const resExplanation = await fetch(
         'http://localhost:4000/data/explanation'
       );
@@ -98,38 +72,28 @@ export default function Start() {
         const explanationData = await resExplanation.json();
         const madeData = makeData(surveyData, explanationData);
         dispatch(init(madeData));
-      } else {
-        throw new Error('통신 이상');
-      }
-    } else {
-      throw new Error('통신 이상');
-    }
+      } else throw new Error('통신 이상');
+    } else throw new Error('통신 이상');
   }
 
   async function mongoFetchData() {
-    const resCount = await fetch('http://localhost:4000/mongo/counts');
-    if (resCount.status === 200) {
-      const num = await resCount.json();
+    const resMongoCount = await fetch('http://localhost:4000/mongo/count');
+    if (resMongoCount.status === 200) {
+      const num = await resMongoCount.json();
       if (num[0].counts !== 0) setCounts(num[0].counts);
-    } else {
-      throw new Error('통신 이상');
-    }
-    //설문 전체 데이터 받아오기
-    const resData = await fetch('http://localhost:4000/mongo/getdata');
-    if (resData.status === 200) {
-      const data = await resData.json();
-      if (data[0].survey.length !== 0) {
-        dispatch(init(data[0]));
-      }
-    } else {
-      throw new Error('통신 이상');
-    }
+    } else throw new Error('통신 이상');
+
+    const resMongoData = await fetch('http://localhost:4000/mongo/getdata');
+    if (resMongoData.status === 200) {
+      const data = await resMongoData.json();
+      if (data[0].survey.length !== 0) dispatch(init(data[0]));
+    } else throw new Error('통신 이상');
   }
 
   useEffect(() => {
-    //sqlFetchData();
+    // sqlfetchData();
     mongoFetchData();
-  }, []);
+  }, [counts]);
 
   return (
     <>

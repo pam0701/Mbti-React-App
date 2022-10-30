@@ -1,15 +1,15 @@
 import styled from 'styled-components';
 
 const MyProgress = styled.div`
-  margin-top=3rem
-  `;
+  margin-top: 3rem;
+`;
 
 const Fill = styled.div`
-    width: 100%;
-    height: 0.75rem
-    background-color: #777;
-    margin-top: 1rem;
-    text-align: :left;
+  width: 100%;
+  height: 0.75rem;
+  background-color: #777;
+  margin-top: 1rem;
+  text-align: left;
 `;
 
 const Gauge = styled.div`

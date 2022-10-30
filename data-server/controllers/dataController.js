@@ -10,7 +10,7 @@ const db = {
   },
   incCounts: (cb) => {
     connection.query(
-      'UPDATE kdtdb.visitor SET counts = counts + 1 WHERE id = 1;',
+      'UPDATE visitor SET counts = counts + 1 WHERE id = 1;',
       (err) => {
         if (err) throw err;
         cb(JSON.stringify('업데이트 성공'));
